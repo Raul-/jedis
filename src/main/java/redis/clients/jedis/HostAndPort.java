@@ -44,9 +44,19 @@ public class HostAndPort {
   }
 
   private String convertHost(String host) {
-    if (host.equals("127.0.0.1")) return LOCALHOST_STR;
-    else if (host.equals("::1")) return LOCALHOST_STR;
+    if (host != null) {
+      final String h = host.toLowerCase();
 
+      // IPV4
+      if (h.equals("127.0.0.1") || h.startsWith("localhost") || h.equals("0.0.0.0")) {
+        return LOCALHOST_STR;
+      }
+
+      // IPV6
+      else if (h.startsWith("::1") || h.startsWith("0:0:0:0:0:0:0:1")) {
+        return LOCALHOST_STR;
+      }
+    }
     return host;
   }
 }
